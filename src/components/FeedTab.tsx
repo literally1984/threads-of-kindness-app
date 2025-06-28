@@ -5,9 +5,10 @@ import FiltersModal from './FiltersModal';
 
 interface FeedTabProps {
   fontSize?: string;
+  onNavigateToChat?: (listing: any, contributorName: string) => void;
 }
 
-const FeedTab = ({ fontSize = 'sm' }: FeedTabProps) => {
+const FeedTab = ({ fontSize = 'sm', onNavigateToChat }: FeedTabProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedListing, setSelectedListing] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -93,10 +94,10 @@ const FeedTab = ({ fontSize = 'sm' }: FeedTabProps) => {
         <h2 className={`${getFontSizeClass()} font-semibold text-gray-800`}>Available Items</h2>
         <button
           onClick={() => setShowFilters(true)}
-          className="flex items-center space-x-2 bg-white px-3 py-2 rounded-full shadow-sm border border-green-200 hover:bg-green-50 transition-colors"
+          className="flex items-center space-x-2 bg-white px-3 py-2 rounded-full shadow-sm border border-[#36723f] border-opacity-30 hover:bg-[#36723f] hover:bg-opacity-5 transition-colors"
         >
-          <Filter size={16} className="text-green-600" />
-          <span className={`${getFontSizeClass()} text-green-700`}>Filters</span>
+          <Filter size={16} className="text-[#36723f]" />
+          <span className={`${getFontSizeClass()} text-[#36723f]`}>Filters</span>
         </button>
       </div>
 
@@ -109,7 +110,7 @@ const FeedTab = ({ fontSize = 'sm' }: FeedTabProps) => {
             </span>
           )}
           {filters.style && (
-            <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
+            <span className="bg-[#36723f] bg-opacity-10 text-[#36723f] px-2 py-1 rounded-full text-xs">
               {filters.style}
             </span>
           )}
@@ -162,14 +163,14 @@ const FeedTab = ({ fontSize = 'sm' }: FeedTabProps) => {
                 <h3 className={`${getFontSizeClass()} font-medium text-gray-800 mb-1 truncate`}>{listing.title}</h3>
                 <p className={`${getFontSizeClass()} text-gray-500 mb-2`}>{listing.location}</p>
                 <div className="flex justify-between items-center">
-                  <span className={`bg-green-100 text-green-700 px-2 py-1 rounded-full ${getFontSizeClass()}`}>
+                  <span className={`bg-[#36723f] bg-opacity-10 text-[#36723f] px-2 py-1 rounded-full ${getFontSizeClass()}`}>
                     Size {listing.size}
                   </span>
                   <button
                     onClick={() => setSelectedListing(listing)}
-                    className="p-1 hover:bg-green-50 rounded-full transition-colors"
+                    className="p-1 hover:bg-[#36723f] hover:bg-opacity-5 rounded-full transition-colors"
                   >
-                    <Eye size={14} className="text-green-600" />
+                    <Eye size={14} className="text-[#36723f]" />
                   </button>
                 </div>
               </div>
@@ -179,11 +180,11 @@ const FeedTab = ({ fontSize = 'sm' }: FeedTabProps) => {
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-center space-x-4 pt-4 border-t border-green-100">
+      <div className="flex items-center justify-center space-x-4 pt-4 border-t border-gray-200">
         <button
           onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
-          className="flex items-center space-x-1 px-4 py-2 bg-white rounded-full shadow-sm border border-green-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-50 transition-colors"
+          className="flex items-center space-x-1 px-4 py-2 bg-white rounded-full shadow-sm border border-[#36723f] border-opacity-30 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#36723f] hover:bg-opacity-5 transition-colors"
         >
           <ChevronLeft size={16} />
           <span className="text-sm">Back</span>
@@ -196,7 +197,7 @@ const FeedTab = ({ fontSize = 'sm' }: FeedTabProps) => {
         <button
           onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
-          className="flex items-center space-x-1 px-4 py-2 bg-white rounded-full shadow-sm border border-green-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-50 transition-colors"
+          className="flex items-center space-x-1 px-4 py-2 bg-white rounded-full shadow-sm border border-[#36723f] border-opacity-30 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#36723f] hover:bg-opacity-5 transition-colors"
         >
           <span className="text-sm">Next</span>
           <ChevronRight size={16} />
@@ -211,6 +212,7 @@ const FeedTab = ({ fontSize = 'sm' }: FeedTabProps) => {
           isBookmarked={bookmarkedItems.has(selectedListing.id)}
           onToggleBookmark={() => toggleBookmark(selectedListing.id)}
           fontSize={fontSize}
+          onNavigateToChat={onNavigateToChat}
         />
       )}
 

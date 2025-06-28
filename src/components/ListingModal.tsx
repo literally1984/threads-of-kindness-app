@@ -8,16 +8,20 @@ interface ListingModalProps {
   isBookmarked: boolean;
   onToggleBookmark: () => void;
   fontSize?: string;
+  onNavigateToChat?: (listing: any, contributorName: string) => void;
 }
 
-const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark, fontSize = 'sm' }: ListingModalProps) => {
+const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark, fontSize = 'sm', onNavigateToChat }: ListingModalProps) => {
   const handleInterest = () => {
-    // Navigate to chat with contributor and include listing reference
-    const listingLink = `${window.location.origin}/#listing-${listing.id}`;
-    const message = `Hi! I'm interested in your ${listing.title}. Here's the listing: ${listingLink}`;
-    
-    // In a real app, this would navigate to chat with pre-filled message
-    alert(`Opening chat with ${listing.contributor.name}...\nMessage: ${message}`);
+    if (onNavigateToChat) {
+      onNavigateToChat(listing, listing.contributor.name);
+      onClose();
+    } else {
+      // Fallback behavior
+      const listingLink = `${window.location.origin}/#listing-${listing.id}`;
+      const message = `Hi! I'm interested in your ${listing.title}. Here's the listing: ${listingLink}`;
+      alert(`Opening chat with ${listing.contributor.name}...\nMessage: ${message}`);
+    }
   };
 
   const handleVirtualTryOn = () => {
@@ -73,7 +77,7 @@ const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark, fontSi
           </div>
 
           {/* Contributor Information */}
-          <div className="bg-green-50 p-4 rounded-xl mb-6">
+          <div className="bg-[#36723f] bg-opacity-5 p-4 rounded-xl mb-6">
             <div className="flex items-center space-x-3">
               <Avatar className="h-12 w-12">
                 <AvatarImage src={listing.contributor.avatar} alt={listing.contributor.name} />
@@ -97,7 +101,7 @@ const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark, fontSi
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="bg-gray-50 p-3 rounded-xl">
               <div className="flex items-center space-x-2 mb-1">
-                <Shirt size={16} className="text-green-600" />
+                <Shirt size={16} className="text-[#36723f]" />
                 <span className={`${getFontSizeClass()} font-medium text-gray-500`}>SIZE</span>
               </div>
               <span className={`${getFontSizeClass()} font-semibold`}>{listing.size}</span>
@@ -138,7 +142,7 @@ const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark, fontSi
             
             <button
               onClick={handleInterest}
-              className={`w-full flex items-center justify-center space-x-2 bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition-colors ${getFontSizeClass()}`}
+              className={`w-full flex items-center justify-center space-x-2 bg-[#36723f] text-white py-3 rounded-xl font-medium hover:bg-[#36723f] hover:bg-opacity-90 transition-colors ${getFontSizeClass()}`}
             >
               <MessageCircle size={20} />
               <span>I'm Interested!</span>
@@ -154,8 +158,8 @@ const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark, fontSi
           </div>
 
           {/* Condition Note */}
-          <div className="mt-4 p-4 bg-green-50 rounded-xl">
-            <p className={`${getFontSizeClass()} text-green-700`}>
+          <div className="mt-4 p-4 bg-[#36723f] bg-opacity-5 rounded-xl">
+            <p className={`${getFontSizeClass()} text-[#36723f]`}>
               <strong>Free to Good Home!</strong> This item is being given away for free. 
               Please only express interest if you genuinely need it.
             </p>

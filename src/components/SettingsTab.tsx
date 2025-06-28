@@ -19,13 +19,13 @@ const SettingsTab = ({ fontSize, onFontSizeChange }: SettingsProps) => {
   return (
     <div className="h-full flex flex-col p-4">
       <div className="flex items-center space-x-2 mb-6">
-        <Settings size={24} className="text-green-700" />
-        <h2 className="text-xl font-semibold text-green-800">Accessibility Settings</h2>
+        <Settings size={24} className="text-[#36723f]" />
+        <h2 className="text-xl font-semibold text-[#36723f]">Accessibility Settings</h2>
       </div>
 
       <div className="bg-white rounded-2xl p-6 shadow-sm">
         <div className="flex items-center space-x-2 mb-4">
-          <Type size={20} className="text-green-600" />
+          <Type size={20} className="text-[#36723f]" />
           <h3 className="text-lg font-medium text-gray-800">Font Size</h3>
         </div>
         
@@ -40,8 +40,8 @@ const SettingsTab = ({ fontSize, onFontSizeChange }: SettingsProps) => {
               onClick={() => onFontSizeChange(size.size)}
               className={`w-full p-4 rounded-xl border-2 transition-all ${
                 fontSize === size.size
-                  ? 'border-green-500 bg-green-50 text-green-700'
-                  : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
+                  ? 'border-[#36723f] bg-[#36723f] bg-opacity-5 text-[#36723f]'
+                  : 'border-gray-200 bg-white hover:border-[#36723f] hover:border-opacity-50 hover:bg-[#36723f] hover:bg-opacity-5'
               }`}
             >
               <div className="flex items-center justify-between">
@@ -54,8 +54,8 @@ const SettingsTab = ({ fontSize, onFontSizeChange }: SettingsProps) => {
           ))}
         </div>
 
-        <div className="mt-8 p-4 bg-green-50 rounded-xl">
-          <h4 className="font-medium text-green-800 mb-2">Preview</h4>
+        <div className="mt-8 p-4 bg-[#36723f] bg-opacity-5 rounded-xl">
+          <h4 className="font-medium text-[#36723f] mb-2">Preview</h4>
           <p className={`${fontSizes.find(s => s.size === fontSize)?.value || 'text-sm-accessible'} text-gray-700`}>
             This is how your text will appear throughout the app with the selected font size.
           </p>
