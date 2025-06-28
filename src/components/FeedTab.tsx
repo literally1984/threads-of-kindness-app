@@ -43,7 +43,7 @@ const FeedTab = () => {
     if (filters.showFavoritesOnly && !bookmarkedItems.has(listing.id)) {
       return false;
     }
-    if (filters.distance && listing.distance > filters.radius) {
+    if (filters.radius && listing.distance > filters.radius) {
       return false;
     }
     if (filters.style && listing.style !== filters.style) {
