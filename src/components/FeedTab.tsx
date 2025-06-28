@@ -1,10 +1,13 @@
-
 import { useState } from 'react';
 import { Heart, Filter, ChevronLeft, ChevronRight, MapPin, Eye } from 'lucide-react';
 import ListingModal from './ListingModal';
 import FiltersModal from './FiltersModal';
 
-const FeedTab = () => {
+interface FeedTabProps {
+  fontSize?: string;
+}
+
+const FeedTab = ({ fontSize = 'sm' }: FeedTabProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedListing, setSelectedListing] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -17,7 +20,7 @@ const FeedTab = () => {
     showFavoritesOnly: false
   });
 
-  // Mock data for clothing listings with seller information
+  // Mock data for clothing listings with contributor information
   const mockListings = Array.from({ length: 48 }, (_, i) => ({
     id: i + 1,
     title: ['Vintage Denim Jacket', 'Cozy Sweater', 'Summer Dress', 'Designer Jeans', 'Leather Boots'][i % 5],
@@ -28,7 +31,7 @@ const FeedTab = () => {
     color: ['Blue', 'Black', 'White', 'Red', 'Green'][i % 5],
     type: ['Jacket', 'Sweater', 'Dress', 'Jeans', 'Shoes'][i % 5],
     distance: Math.floor(Math.random() * 50) + 1,
-    seller: {
+    contributor: {
       name: ['Sarah Johnson', 'Mike Chen', 'Emma Davis', 'Alex Rodriguez', 'Jamie Kim'][i % 5],
       avatar: `https://images.unsplash.com/photo-${1507003211169 + i}-a54c709c8d2e?w=100&h=100&fit=crop&crop=face`,
       rating: 4.5 + (Math.random() * 0.5),
@@ -72,17 +75,28 @@ const FeedTab = () => {
     setBookmarkedItems(newBookmarks);
   };
 
+  const getFontSizeClass = () => {
+    const fontSizeMap = {
+      xs: 'text-xs-accessible',
+      sm: 'text-sm-accessible', 
+      base: 'text-base-accessible',
+      lg: 'text-lg-accessible',
+      xl: 'text-xl-accessible'
+    };
+    return fontSizeMap[fontSize as keyof typeof fontSizeMap] || 'text-sm-accessible';
+  };
+
   return (
     <div className="h-full flex flex-col p-4">
       {/* Filters Header */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-800">Available Items</h2>
+        <h2 className={`${getFontSizeClass()} font-semibold text-gray-800`}>Available Items</h2>
         <button
           onClick={() => setShowFilters(true)}
           className="flex items-center space-x-2 bg-white px-3 py-2 rounded-full shadow-sm border border-green-200 hover:bg-green-50 transition-colors"
         >
           <Filter size={16} className="text-green-600" />
-          <span className="text-sm text-green-700">Filters</span>
+          <span className={`${getFontSizeClass()} text-green-700`}>Filters</span>
         </button>
       </div>
 
@@ -145,10 +159,10 @@ const FeedTab = () => {
                 </div>
               </div>
               <div className="p-3">
-                <h3 className="font-medium text-gray-800 text-sm mb-1 truncate">{listing.title}</h3>
-                <p className="text-xs text-gray-500 mb-2">{listing.location}</p>
+                <h3 className={`${getFontSizeClass()} font-medium text-gray-800 mb-1 truncate`}>{listing.title}</h3>
+                <p className={`${getFontSizeClass()} text-gray-500 mb-2`}>{listing.location}</p>
                 <div className="flex justify-between items-center">
-                  <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
+                  <span className={`bg-green-100 text-green-700 px-2 py-1 rounded-full ${getFontSizeClass()}`}>
                     Size {listing.size}
                   </span>
                   <button
@@ -196,6 +210,7 @@ const FeedTab = () => {
           onClose={() => setSelectedListing(null)}
           isBookmarked={bookmarkedItems.has(selectedListing.id)}
           onToggleBookmark={() => toggleBookmark(selectedListing.id)}
+          fontSize={fontSize}
         />
       )}
 

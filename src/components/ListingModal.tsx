@@ -7,17 +7,33 @@ interface ListingModalProps {
   onClose: () => void;
   isBookmarked: boolean;
   onToggleBookmark: () => void;
+  fontSize?: string;
 }
 
-const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark }: ListingModalProps) => {
+const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark, fontSize = 'sm' }: ListingModalProps) => {
   const handleInterest = () => {
-    // In a real app, this would send a notification to the seller
-    alert('Interest sent! The seller will be notified.');
+    // Navigate to chat with contributor and include listing reference
+    const listingLink = `${window.location.origin}/#listing-${listing.id}`;
+    const message = `Hi! I'm interested in your ${listing.title}. Here's the listing: ${listingLink}`;
+    
+    // In a real app, this would navigate to chat with pre-filled message
+    alert(`Opening chat with ${listing.contributor.name}...\nMessage: ${message}`);
   };
 
   const handleVirtualTryOn = () => {
     // Placeholder for virtual try-on feature
     alert('Virtual try-on feature coming soon!');
+  };
+
+  const getFontSizeClass = () => {
+    const fontSizeMap = {
+      xs: 'text-xs-accessible',
+      sm: 'text-sm-accessible', 
+      base: 'text-base-accessible',
+      lg: 'text-lg-accessible',
+      xl: 'text-xl-accessible'
+    };
+    return fontSizeMap[fontSize as keyof typeof fontSizeMap] || 'text-sm-accessible';
   };
 
   return (
@@ -49,29 +65,29 @@ const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark }: List
 
         {/* Content */}
         <div className="p-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-2">{listing.title}</h2>
+          <h2 className={`${getFontSizeClass()} font-bold text-gray-800 mb-2`}>{listing.title}</h2>
           
           <div className="flex items-center space-x-2 text-gray-600 mb-4">
             <MapPin size={16} />
-            <span className="text-sm">{listing.location} • {listing.distance} miles away</span>
+            <span className={getFontSizeClass()}>{listing.location} • {listing.distance} miles away</span>
           </div>
 
-          {/* Seller Information */}
+          {/* Contributor Information */}
           <div className="bg-green-50 p-4 rounded-xl mb-6">
             <div className="flex items-center space-x-3">
               <Avatar className="h-12 w-12">
-                <AvatarImage src={listing.seller.avatar} alt={listing.seller.name} />
-                <AvatarFallback>{listing.seller.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                <AvatarImage src={listing.contributor.avatar} alt={listing.contributor.name} />
+                <AvatarFallback>{listing.contributor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-800">{listing.seller.name}</h3>
+                <h3 className={`${getFontSizeClass()} font-semibold text-gray-800`}>{listing.contributor.name}</h3>
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center space-x-1">
                     <Star size={14} className="fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm text-gray-600">{listing.seller.rating.toFixed(1)}</span>
+                    <span className={`${getFontSizeClass()} text-gray-600`}>{listing.contributor.rating.toFixed(1)}</span>
                   </div>
-                  <span className="text-sm text-gray-500">•</span>
-                  <span className="text-sm text-gray-600">{listing.seller.totalDonations} donations</span>
+                  <span className={`${getFontSizeClass()} text-gray-500`}>•</span>
+                  <span className={`${getFontSizeClass()} text-gray-600`}>{listing.contributor.totalDonations} donations</span>
                 </div>
               </div>
             </div>
@@ -82,31 +98,31 @@ const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark }: List
             <div className="bg-gray-50 p-3 rounded-xl">
               <div className="flex items-center space-x-2 mb-1">
                 <Shirt size={16} className="text-green-600" />
-                <span className="text-xs font-medium text-gray-500">SIZE</span>
+                <span className={`${getFontSizeClass()} font-medium text-gray-500`}>SIZE</span>
               </div>
-              <span className="text-sm font-semibold">{listing.size}</span>
+              <span className={`${getFontSizeClass()} font-semibold`}>{listing.size}</span>
             </div>
             
             <div className="bg-gray-50 p-3 rounded-xl">
               <div className="flex items-center space-x-2 mb-1">
                 <Palette size={16} className="text-blue-600" />
-                <span className="text-xs font-medium text-gray-500">COLOR</span>
+                <span className={`${getFontSizeClass()} font-medium text-gray-500`}>COLOR</span>
               </div>
-              <span className="text-sm font-semibold">{listing.color}</span>
+              <span className={`${getFontSizeClass()} font-semibold`}>{listing.color}</span>
             </div>
             
             <div className="bg-gray-50 p-3 rounded-xl">
               <div className="flex items-center space-x-2 mb-1">
-                <span className="text-xs font-medium text-gray-500">STYLE</span>
+                <span className={`${getFontSizeClass()} font-medium text-gray-500`}>STYLE</span>
               </div>
-              <span className="text-sm font-semibold">{listing.style}</span>
+              <span className={`${getFontSizeClass()} font-semibold`}>{listing.style}</span>
             </div>
             
             <div className="bg-gray-50 p-3 rounded-xl">
               <div className="flex items-center space-x-2 mb-1">
-                <span className="text-xs font-medium text-gray-500">TYPE</span>
+                <span className={`${getFontSizeClass()} font-medium text-gray-500`}>TYPE</span>
               </div>
-              <span className="text-sm font-semibold">{listing.type}</span>
+              <span className={`${getFontSizeClass()} font-semibold`}>{listing.type}</span>
             </div>
           </div>
 
@@ -114,7 +130,7 @@ const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark }: List
           <div className="space-y-3">
             <button
               onClick={handleVirtualTryOn}
-              className="w-full flex items-center justify-center space-x-2 bg-purple-100 text-purple-700 py-3 rounded-xl font-medium hover:bg-purple-200 transition-colors"
+              className={`w-full flex items-center justify-center space-x-2 bg-purple-100 text-purple-700 py-3 rounded-xl font-medium hover:bg-purple-200 transition-colors ${getFontSizeClass()}`}
             >
               <Eye size={20} />
               <span>Virtual Try-On</span>
@@ -122,16 +138,24 @@ const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark }: List
             
             <button
               onClick={handleInterest}
-              className="w-full flex items-center justify-center space-x-2 bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition-colors"
+              className={`w-full flex items-center justify-center space-x-2 bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition-colors ${getFontSizeClass()}`}
             >
               <MessageCircle size={20} />
               <span>I'm Interested!</span>
+            </button>
+
+            <button
+              onClick={onClose}
+              className={`w-full flex items-center justify-center space-x-2 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors ${getFontSizeClass()}`}
+            >
+              <X size={20} />
+              <span>Exit</span>
             </button>
           </div>
 
           {/* Condition Note */}
           <div className="mt-4 p-4 bg-green-50 rounded-xl">
-            <p className="text-sm text-green-700">
+            <p className={`${getFontSizeClass()} text-green-700`}>
               <strong>Free to Good Home!</strong> This item is being given away for free. 
               Please only express interest if you genuinely need it.
             </p>

@@ -54,6 +54,10 @@ All colors MUST be HSL.
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Custom accessibility colors */
+    --app-background: 196 41% 70%; /* #bad3de */
+    --app-text: 134 61% 11%; /* #132c0b */
   }
 
   .dark {
@@ -102,6 +106,8 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background-color: hsl(var(--app-background));
+    color: hsl(var(--app-text));
   }
 }
 
@@ -138,3 +144,10 @@ All colors MUST be HSL.
   background: #e5e7eb;
   border: none;
 }
+
+/* Custom font size classes for accessibility */
+.text-xs-accessible { font-size: 0.875rem; }
+.text-sm-accessible { font-size: 1rem; }
+.text-base-accessible { font-size: 1.125rem; }
+.text-lg-accessible { font-size: 1.25rem; }
+.text-xl-accessible { font-size: 1.5rem; }
