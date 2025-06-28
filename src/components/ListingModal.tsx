@@ -1,5 +1,6 @@
 
-import { X, Heart, MapPin, Palette, Shirt, Eye, MessageCircle } from 'lucide-react';
+import { X, Heart, MapPin, Palette, Shirt, Eye, MessageCircle, Star } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
 
 interface ListingModalProps {
   listing: any;
@@ -53,6 +54,27 @@ const ListingModal = ({ listing, onClose, isBookmarked, onToggleBookmark }: List
           <div className="flex items-center space-x-2 text-gray-600 mb-4">
             <MapPin size={16} />
             <span className="text-sm">{listing.location} • {listing.distance} miles away</span>
+          </div>
+
+          {/* Seller Information */}
+          <div className="bg-green-50 p-4 rounded-xl mb-6">
+            <div className="flex items-center space-x-3">
+              <Avatar className="h-12 w-12">
+                <AvatarImage src={listing.seller.avatar} alt={listing.seller.name} />
+                <AvatarFallback>{listing.seller.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-800">{listing.seller.name}</h3>
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1">
+                    <Star size={14} className="fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm text-gray-600">{listing.seller.rating.toFixed(1)}</span>
+                  </div>
+                  <span className="text-sm text-gray-500">•</span>
+                  <span className="text-sm text-gray-600">{listing.seller.totalDonations} donations</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Details Grid */}

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Heart, Filter, ChevronLeft, ChevronRight, MapPin, Eye } from 'lucide-react';
 import ListingModal from './ListingModal';
@@ -16,7 +15,7 @@ const FeedTab = () => {
     radius: 25
   });
 
-  // Mock data for clothing listings
+  // Mock data for clothing listings with seller information
   const mockListings = Array.from({ length: 48 }, (_, i) => ({
     id: i + 1,
     title: ['Vintage Denim Jacket', 'Cozy Sweater', 'Summer Dress', 'Designer Jeans', 'Leather Boots'][i % 5],
@@ -26,7 +25,13 @@ const FeedTab = () => {
     style: ['Casual', 'Formal', 'Vintage', 'Trendy'][i % 4],
     color: ['Blue', 'Black', 'White', 'Red', 'Green'][i % 5],
     type: ['Jacket', 'Sweater', 'Dress', 'Jeans', 'Shoes'][i % 5],
-    distance: Math.floor(Math.random() * 50) + 1
+    distance: Math.floor(Math.random() * 50) + 1,
+    seller: {
+      name: ['Sarah Johnson', 'Mike Chen', 'Emma Davis', 'Alex Rodriguez', 'Jamie Kim'][i % 5],
+      avatar: `https://images.unsplash.com/photo-${1507003211169 + i}-a54c709c8d2e?w=100&h=100&fit=crop&crop=face`,
+      rating: 4.5 + (Math.random() * 0.5),
+      totalDonations: Math.floor(Math.random() * 50) + 5
+    }
   }));
 
   const itemsPerPage = 16;
