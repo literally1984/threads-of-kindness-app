@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Heart, Filter, ChevronLeft, ChevronRight, MapPin, Eye } from 'lucide-react';
 import ListingModal from './ListingModal';
@@ -12,7 +13,8 @@ const FeedTab = () => {
     style: '',
     color: '',
     type: '',
-    radius: 25
+    radius: 25,
+    showFavoritesOnly: false
   });
 
   // Mock data for clothing listings with seller information
@@ -35,9 +37,30 @@ const FeedTab = () => {
   }));
 
   const itemsPerPage = 16;
-  const totalPages = Math.ceil(mockListings.length / itemsPerPage);
+  
+  // Filter listings based on active filters
+  const filteredListings = mockListings.filter(listing => {
+    if (filters.showFavoritesOnly && !bookmarkedItems.has(listing.id)) {
+      return false;
+    }
+    if (filters.distance && listing.distance > filters.radius) {
+      return false;
+    }
+    if (filters.style && listing.style !== filters.style) {
+      return false;
+    }
+    if (filters.color && listing.color !== filters.color) {
+      return false;
+    }
+    if (filters.type && listing.type !== filters.type) {
+      return false;
+    }
+    return true;
+  });
+
+  const totalPages = Math.ceil(filteredListings.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentListings = mockListings.slice(startIndex, startIndex + itemsPerPage);
+  const currentListings = filteredListings.slice(startIndex, startIndex + itemsPerPage);
 
   const toggleBookmark = (id) => {
     const newBookmarks = new Set(bookmarkedItems);
@@ -64,8 +87,13 @@ const FeedTab = () => {
       </div>
 
       {/* Active Filters Display */}
-      {(filters.style || filters.color || filters.type) && (
+      {(filters.style || filters.color || filters.type || filters.showFavoritesOnly) && (
         <div className="flex flex-wrap gap-2 mb-4">
+          {filters.showFavoritesOnly && (
+            <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs">
+              ❤️ Favorites Only
+            </span>
+          )}
           {filters.style && (
             <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
               {filters.style}

@@ -26,12 +26,20 @@ const FiltersModal = ({ filters, onFiltersChange, onClose }: FiltersModalProps) 
     });
   };
 
+  const toggleFavorites = () => {
+    onFiltersChange({
+      ...filters,
+      showFavoritesOnly: !filters.showFavoritesOnly
+    });
+  };
+
   const clearAllFilters = () => {
     onFiltersChange({
       style: '',
       color: '',
       type: '',
-      radius: 25
+      radius: 25,
+      showFavoritesOnly: false
     });
   };
 
@@ -50,6 +58,20 @@ const FiltersModal = ({ filters, onFiltersChange, onClose }: FiltersModalProps) 
         </div>
 
         <div className="p-4 space-y-6">
+          {/* Favorites Filter */}
+          <div>
+            <button
+              onClick={toggleFavorites}
+              className={`w-full px-4 py-3 rounded-xl font-medium transition-colors ${
+                filters.showFavoritesOnly
+                  ? 'bg-red-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {filters.showFavoritesOnly ? '❤️ Showing Favorites Only' : '🤍 Show Favorites Only'}
+            </button>
+          </div>
+
           {/* Location Radius */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -58,14 +80,14 @@ const FiltersModal = ({ filters, onFiltersChange, onClose }: FiltersModalProps) 
             <input
               type="range"
               min="1"
-              max="50"
+              max="25"
               value={filters.radius}
               onChange={(e) => updateRadius(Number(e.target.value))}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
               <span>1 mi</span>
-              <span>50 mi</span>
+              <span>25 mi</span>
             </div>
           </div>
 
